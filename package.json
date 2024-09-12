@@ -1,0 +1,20 @@
+{
+  "name": "recipe-book",
+  "version": "1.0.0",
+  "description": "An application for saving and viewing recipes",
+  "main": "client",
+  "scripts": {
+    "install": "concurrently \"cd server && npm install\" \"cd client && npm install\"",
+    "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm run dev\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cawleygl/recipe-book.git"
+  },
+  "author": "Grant Cawley",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cawleygl/recipe-book/issues"
+  },
+  "homepage": "https://github.com/cawleygl/recipe-book#readme"
+}
