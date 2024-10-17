@@ -199,8 +199,11 @@ export default function RecipeDetails() {
             {editMode ? (
               <>
                 <h3>Select Ingredients:</h3>
-                <select name="ingredients" onChange={(event) => setSelectIngredient(event.target.value)}>
-                  <option value="" disabled selected>
+                <select 
+								name="ingredients" 
+								defaultValue=""
+								onChange={(event) => setSelectIngredient(event.target.value)}>
+                  <option value="" disabled>
                     Select Ingredient
                   </option>
                   {allIngredients
