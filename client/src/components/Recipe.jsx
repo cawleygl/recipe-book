@@ -66,9 +66,9 @@ export default function Recipe() {
           body: JSON.stringify(person),
         });
       } else {
-        // if we are updating a recipe we will PATCH to /recipe/:id.
+        // if we are updating a recipe we will PUT to /recipe/:id.
         response = await fetch(`http://localhost:5050/recipes/${params.id}`, {
-          method: "PATCH",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
