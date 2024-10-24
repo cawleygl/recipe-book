@@ -47,7 +47,7 @@ const controller = {
 				if (direction) {
 					res.json(direction);
 				} else {
-					res.status(404).json(`No Directions Found with ID ${req.params.id}`);
+					res.status(404).json(`No Directions Found with ID ${req.params.directionID}`);
 					next(error);
 				}
 			})

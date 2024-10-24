@@ -12,9 +12,7 @@ const controller = {
 					res.status(404).send("No Ingredients Found");
 				}
 			})
-			.catch((err) => {
-				res.json({ mesage: err.message });
-			});
+			.catch((error) => next(error));
 	},
 	// POST /ingredients - Create new ingredient
   create: async (req, res, next) => {
@@ -24,9 +22,7 @@ const controller = {
       .then((ingredient) => {
         res.json(ingredient);
       })
-      .catch((err) => {
-        res.json({ mesage: err.message });
-      });
+			.catch((error) => next(error));
   },
 };
 

@@ -1,6 +1,7 @@
 import express from 'express';
 import controller from '../controllers/recipeController.js';
 import directionRoutes from "../routes/directionRoutes.js";
+import callsForRoutes from "../routes/callsForRoutes.js";
 
 const recipeRoutes = express.Router();
 
@@ -17,5 +18,7 @@ recipeRoutes.delete('/:id', controller.delete);
 
 // Direction Routes
 recipeRoutes.use("/:id/directions", directionRoutes);
+// Calls For (Ingredient) Routes
+recipeRoutes.use("/:id/callsFor", callsForRoutes);
 
 export default recipeRoutes;

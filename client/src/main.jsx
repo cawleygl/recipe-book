@@ -5,8 +5,8 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import App from "./App";
-import LandingPage from "./components/LandingPage";
-import RecipeDetails from "./components/RecipeDetails";
+import CreateRecipe from "./pages/CreateRecipe/CreateRecipe";
+import RecipeDetails from "./pages/RecipeDetails/RecipeDetails";
 import "./index.css";
 
 const router = createBrowserRouter([
@@ -16,7 +16,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <LandingPage />,
+        element: <CreateRecipe />,
       },
     ],
   },

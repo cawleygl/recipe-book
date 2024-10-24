@@ -56,24 +56,107 @@ export async function getIngredients() {
   return ingredients;
 }
 
-export async function addIngredient(ingredientName) {
-  const sampleData = {
-    ingredientName: ingredientName,
-  };
-  const response = await fetch("http://localhost:5050/ingredients", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(sampleData),
-  });
+export async function addIngredient(ingredientName, unit) {
+  try {
+    const sampleData = {
+      ingredientName: ingredientName,
+      unit: unit,
+    };
+    const response = await fetch("http://localhost:5050/ingredients", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(sampleData),
+    });
+    return { response: response, json: await response.json() };
+  } catch (error) {
+    const message = `An error has occurred: ${error}`;
+    console.error(message);
+  }
+}
+
+export async function addDirection(recipeID, index, instruction) {
+  try {
+    const reqBody = {
+      recipe: recipeID,
+      index: index,
+      instruction: instruction,
+    };
+    const response = await fetch(
+      `http://localhost:5050/recipes/${recipeID.toString()}/directions`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reqBody),
+      }
+    );
+
+    return { response: response, json: await response.json() };
+  } catch (error) {
+    const message = `An error has occurred: ${error}`;
+    console.error(message);
+  }
+}
+
+export async function editDirection(recipeID, directionID, index, instruction) {
+  try {
+    const reqBody = {
+      index: index,
+      instruction: instruction,
+    };
+    const response = await fetch(
+      `http://localhost:5050/recipes/${recipeID.toString()}/directions/${directionID.toString()}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reqBody),
+      }
+    );
+
+    return { response: response, json: await response.json() };
+  } catch (error) {
+    const message = `An error has occurred: ${error}`;
+    console.error(message);
+  }
+}
+
+export async function deleteDirection(recipeID, directionID) {
+  try {
+    const response = await fetch(
+      `http://localhost:5050/recipes/${recipeID.toString()}/directions/${directionID.toString()}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return { response: response, json: await response.json() };
+  } catch (error) {
+    const message = `An error has occurred: ${error}`;
+    console.error(message);
+  }
+}
+
+export async function getAllDirectionsOnRecipe(recipeID) {
+  if (!recipeID) return;
+
+  const response = await fetch(
+    `http://localhost:5050/recipes/${recipeID.toString()}/directions`
+  );
   if (!response.ok) {
     const message = `An error has occurred: ${response.statusText}`;
     console.error(message);
     return;
   }
-  const fetchResponse = await response.json();
-  return fetchResponse;
+  const results = await response.json();
+  return results;
 }
 
 export async function addCallsFor(recipeID, ingredientID, amount, modifier) {
@@ -83,7 +166,7 @@ export async function addCallsFor(recipeID, ingredientID, amount, modifier) {
     amount: amount,
     modifier: modifier,
   };
-  const response = await fetch("http://localhost:5050/callsFor", {
+  const response = await fetch(`http://localhost:5050/recipes/${recipeID.toString()}/callsFor`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -99,73 +182,54 @@ export async function addCallsFor(recipeID, ingredientID, amount, modifier) {
   return fetchResponse;
 }
 
-export async function addDirection(recipeID, index, instruction) {
+export async function editCallsFor(recipeID, callsForID, amount, modifier) {
   try {
-    const reqBody = {
-      recipe: recipeID,
-      index: index,
-      instruction: instruction,
-    };
-    const response = await fetch(`http://localhost:5050/recipes/${recipeID.toString()}/directions`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(reqBody),
-    });
-
-		return {response: response, json: await response.json()};
-
-  } catch (error) {
-    const message = `An error has occurred: ${error}`;
-    console.error(message);
-  } 
-}
-
-export async function editDirection(recipeID, directionID, index, instruction) {
-  try {
-    const reqBody = {
-      index: index,
-      instruction: instruction
-    };
-    const response = await fetch(`http://localhost:5050/recipes/${recipeID.toString()}/directions/${directionID.toString()}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(reqBody),
-    });
-
-		return {response: response, json: await response.json()};
-
-  } catch (error) {
-    const message = `An error has occurred: ${error}`;
-    console.error(message);
-  } 
-}
-
-export async function deleteDirection(recipeID, directionID) {
-  try {
-    const response = await fetch(`http://localhost:5050/recipes/${recipeID.toString()}/directions/${directionID.toString()}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
+		const reqBody = {
+			amount: amount,
+			modifier: modifier,
+		};
+    const response = await fetch(
+      `http://localhost:5050/recipes/${recipeID.toString()}/callsFor/${callsForID.toString()}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reqBody),
       }
-    });
+    );
 
-		return {response: response, json: await response.json()};
-
+    return { response: response, json: await response.json() };
   } catch (error) {
     const message = `An error has occurred: ${error}`;
     console.error(message);
-  } 
+  }
 }
 
-export async function getAllDirectionsOnRecipe(recipeID) {
+export async function deleteCallsFor(recipeID, callsForID) {
+  try {
+    const response = await fetch(
+      `http://localhost:5050/recipes/${recipeID.toString()}/callsFor/${callsForID.toString()}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return { response: response, json: await response.json() };
+  } catch (error) {
+    const message = `An error has occurred: ${error}`;
+    console.error(message);
+  }
+}
+
+export async function getAllIngredientsOnRecipe(recipeID) {
   if (!recipeID) return;
 
   const response = await fetch(
-    `http://localhost:5050/recipes/${recipeID.toString()}/directions`
+    `http://localhost:5050/recipes/${recipeID.toString()}/callsFor`
   );
   if (!response.ok) {
     const message = `An error has occurred: ${response.statusText}`;

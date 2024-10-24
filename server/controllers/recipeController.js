@@ -22,9 +22,10 @@ const controller = {
   show: async (req, res, next) => {
     let recipeId = req.params.id;
 
-    Promise.all([model.findById(recipeId), direction.find({recipe : recipeId}), callsFor.find({recipe : recipeId}).populate("ingredient", "ingredientName")])
+    Promise.all([model.findById(recipeId), direction.find({recipe : recipeId}), callsFor.find({recipe : recipeId}).populate("ingredient")])
       .then((results) => {
         if (results) {
+					console.log("results", results);
 					const [ recipe, directions, ingredients ] = results; 
 					// Sort directions by index
 					directions.sort((a, b) => a.index - b.index);

@@ -11,4 +11,6 @@ const calls_forSchema = new Schema({
 	{timestamps: true}
 )
 
+calls_forSchema.index({ recipe: 1, ingredient: -1 }, {unique: [true, 'Ingredient already added to Recipe']});
+
 export default mongoose.model("CallsFor", calls_forSchema);

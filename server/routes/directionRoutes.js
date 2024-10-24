@@ -7,9 +7,9 @@ const directionRoutes = express.Router({mergeParams: true});
 directionRoutes.get('/', controller.all);
 // POST recipes/:id/directions - Create new direction
 directionRoutes.post('/', controller.create);
-// PUT recipes/:id/directions - Update a direction
+// PUT recipes/:id/directions/:directionID - Update a direction
 directionRoutes.put('/:directionID', controller.update);
-// DELETE recipes/:id/directions/:id - Delete a direction
+// DELETE recipes/:id/directions/:directionID - Delete a direction
 directionRoutes.delete('/:directionID', controller.delete);
 
 export default directionRoutes;

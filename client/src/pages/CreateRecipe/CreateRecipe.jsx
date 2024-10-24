@@ -5,9 +5,9 @@ import {
   addRecipe,
   getIngredients,
   addIngredient,
-} from "../utils/api";
+} from "../../utils/api";
 
-export default function LandingPage() {
+export default function CreateRecipe() {
   // const params = useParams();
   // const navigate = useNavigate();
   // All Recipes and Ingredients Lists
@@ -16,8 +16,9 @@ export default function LandingPage() {
   // Recipe Entry Variables
   const [recipeName, setRecipeName] = useState("");
   const [recipeDescription, setRecipeDescription] = useState("");
-	// Ingredient Entry Variable
+	// Ingredient Entry Variables
 	const [ingredientName, setIngredientName] = useState("");
+	const [ingredientUnit, setIngredientUnit] = useState("");
 
   async function handleRecipeFetch() {
     setRecipeList(await getRecipes());
@@ -27,14 +28,17 @@ export default function LandingPage() {
   }
 
   const handleRecipeAdd = async () => {
-    await addRecipe(recipeName, recipeDescription);
+		await addRecipe(recipeName.trim(), recipeDescription.trim());
     setRecipeName("");
     setRecipeDescription("");
     await handleRecipeFetch();
   }
+
 	const handleIngredientAdd = async () => {
-    await addIngredient(ingredientName);
+		//event.preventDefault();
+    await addIngredient(ingredientName.trim(), ingredientUnit.trim());
 		setIngredientName("");
+		setIngredientUnit("");
     await handleIngredientFetch();
   }
 
@@ -44,8 +48,8 @@ export default function LandingPage() {
   }, []);
 
   useEffect(() => {
-    console.log("recipeName", recipeName);
-    console.log("recipeDescription", recipeDescription);
+    console.log("recipeName", recipeName.trim());
+    console.log("recipeDescription", recipeDescription.trim());
 
   }, [recipeName, recipeDescription]);
 
@@ -82,7 +86,7 @@ export default function LandingPage() {
               <li key={index}>
                 <a href={"/recipes/" + recipe._id}>{recipe.dishName}</a>
                 &nbsp;-&nbsp;
-                {recipe.description}
+                {recipe.description.trim()}
                 {/* {recipe.map((recipe, index) => {})} */}
                 {/* <button onClick={postData}>Edit Recipe</button>&nbsp;
 						<button onClick={postData}>Delete Recipe</button> */}
@@ -92,7 +96,7 @@ export default function LandingPage() {
       </ul>
       <h1>Ingredients</h1>
       <h2>Add Ingredient:</h2>
-      <form onSubmit={handleIngredientAdd}>
+      <form onSubmit={(event) => handleIngredientAdd(event)}>
         <label htmlFor="ingredientName">Name</label>
         <br />
         <input
@@ -101,6 +105,16 @@ export default function LandingPage() {
           name="ingredientName"
           placeholder="..."
           onChange={(event) => setIngredientName(event.target.value)}
+        />
+				<br />
+        <label htmlFor="ingredientUnit">Unit</label>
+        <br />
+        <input
+          type="text"
+          id="ingredientUnit"
+          name="ingredientUnit"
+          placeholder="..."
+          onChange={(event) => setIngredientUnit(event.target.value)}
         />
         <br />
         <input type="submit" />
@@ -111,7 +125,7 @@ export default function LandingPage() {
             return (
               <li key={index}>
                 {/* <a href={"/recipes/" + ingredient._id}> */}
-                {ingredient.ingredientName}
+                {ingredient.ingredientName.trim()}
                 {/* </a>
 						&nbsp;-&nbsp;{ingredient.description} */}
 

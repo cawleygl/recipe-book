@@ -27,8 +27,16 @@ const uri =
 app.use("/recipes", recipeRoutes);
 // Ingredient Routes
 app.use("/ingredients", ingredientRoutes);
-// Calls For Routes
-app.use("/callsFor", callsForRoutes);
+
+// Default Error Handling
+app.use((err, req, res, next) => {
+	console.error(err.stack);
+	if (!err.status) {
+		err.status = 500;
+		err.message = ("Internal Server Error");
+	}
+	res.status(err.status).send(err);
+})
 
 // start the Express server
 app.listen(PORT, () => {
