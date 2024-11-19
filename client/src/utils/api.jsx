@@ -9,11 +9,11 @@ export async function getRecipes() {
   return recipes;
 }
 
-export async function getOneRecipe(id) {
-  if (!id) return;
+export async function getOneRecipe(recipeID) {
+  if (!recipeID) return;
 
   const response = await fetch(
-    `http://localhost:5050/recipes/${id.toString()}`
+    `http://localhost:5050/recipes/${recipeID.toString()}`
   );
   if (!response.ok) {
     const message = `An error has occurred: ${response.statusText}`;
@@ -24,25 +24,74 @@ export async function getOneRecipe(id) {
   return results;
 }
 
-export async function addRecipe(dishName, description) {
-  const sampleData = {
-    dishName: dishName,
-    description: description,
-  };
-  const response = await fetch("http://localhost:5050/recipes", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(sampleData),
-  });
-  if (!response.ok) {
-    const message = `An error has occurred: ${response.statusText}`;
+export async function addRecipe(event, recipeBody, setPageAlert, navigate) {
+  event.preventDefault()
+  try {
+    const response = await fetch("http://localhost:5050/recipes", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(recipeBody),
+    });
+    if (response.status === 200) {
+      const [ recipe, direction, callsFor ] =  await response.json();
+      const recipeID = recipe._id;
+      // TODO: CHECK RETURNS TO MAKE SURE EVERYTHING GOES THROUHG
+      console.log("Create Return", recipe, direction, callsFor);
+      setPageAlert({variant: "success", message: "Recipe Successfully Added", show: true});
+      navigate("/recipes/" + recipeID);
+      return { response: response };
+    }
+    if (response.status === 403) {
+      const { error }  = await response.json();
+      setPageAlert({variant: "danger", message: error, show: true});
+    }
+  } catch (error) {
+    const message = `An error has occurred: ${error}`;
     console.error(message);
-    return;
   }
-  const fetchResponse = await response.json();
-  return fetchResponse;
+}
+
+export async function editRecipe(recipeID, recipeBody) {
+  try {
+    const response = await fetch(
+      `http://localhost:5050/recipes/${recipeID.toString()}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(recipeBody),
+      }
+    );
+
+    return { response: response, json: await response.json() };
+  } catch (error) {
+    const message = `An error has occurred: ${error}`;
+    console.error(message);
+  }
+}
+
+export async function deleteRecipe(recipeID) {
+  if (!recipeID) return;
+
+  try {
+    const response = await fetch(
+      `http://localhost:5050/recipes/${recipeID.toString()}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return { response: response, json: await response.json() };
+  } catch (error) {
+    const message = `An error has occurred: ${error}`;
+    console.error(message);
+  }
 }
 
 export async function getIngredients() {
@@ -56,11 +105,10 @@ export async function getIngredients() {
   return ingredients;
 }
 
-export async function addIngredient(ingredientName, unit) {
+export async function addIngredient(ingredientName) {
   try {
     const sampleData = {
-      ingredientName: ingredientName,
-      unit: unit,
+      ingredientName: ingredientName
     };
     const response = await fetch("http://localhost:5050/ingredients", {
       method: "POST",
@@ -69,6 +117,27 @@ export async function addIngredient(ingredientName, unit) {
       },
       body: JSON.stringify(sampleData),
     });
+    return { response: response, json: await response.json() };
+  } catch (error) {
+    const message = `An error has occurred: ${error}`;
+    console.error(message);
+  }
+}
+
+export async function deleteIngredient(ingredientID) {
+  if (!ingredientID) return;
+
+  try {
+    const response = await fetch(
+      `http://localhost:5050/ingredients/${ingredientID.toString()}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
     return { response: response, json: await response.json() };
   } catch (error) {
     const message = `An error has occurred: ${error}`;
@@ -166,13 +235,16 @@ export async function addCallsFor(recipeID, ingredientID, amount, modifier) {
     amount: amount,
     modifier: modifier,
   };
-  const response = await fetch(`http://localhost:5050/recipes/${recipeID.toString()}/callsFor`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(reqBody),
-  });
+  const response = await fetch(
+    `http://localhost:5050/recipes/${recipeID.toString()}/callsFor`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(reqBody),
+    }
+  );
   if (!response.ok) {
     const message = `An error has occurred: ${response.statusText}`;
     console.error(message);
@@ -184,10 +256,10 @@ export async function addCallsFor(recipeID, ingredientID, amount, modifier) {
 
 export async function editCallsFor(recipeID, callsForID, amount, modifier) {
   try {
-		const reqBody = {
-			amount: amount,
-			modifier: modifier,
-		};
+    const reqBody = {
+      amount: amount,
+      modifier: modifier,
+    };
     const response = await fetch(
       `http://localhost:5050/recipes/${recipeID.toString()}/callsFor/${callsForID.toString()}`,
       {

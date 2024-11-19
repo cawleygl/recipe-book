@@ -1,0 +1,9 @@
+#ingredientSelect {
+	width: 100%;
+	max-height: 300px;
+}
+
+.scrollable {
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+}

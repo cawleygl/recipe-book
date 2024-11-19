@@ -1,142 +1,125 @@
-import { useState, useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import {
-  getRecipes,
-  addRecipe,
   getIngredients,
+  addRecipe,
+  addDirection,
   addIngredient,
+  addCallsFor,
 } from "../../utils/api";
+import { Form, Button } from "react-bootstrap";
+import { AlertContext } from "../../App";
 
-export default function CreateRecipe() {
-  // const params = useParams();
-  // const navigate = useNavigate();
-  // All Recipes and Ingredients Lists
-  const [recipeList, setRecipeList] = useState([]);
-  const [ingredientList, setIngredientList] = useState([]);
-  // Recipe Entry Variables
-  const [recipeName, setRecipeName] = useState("");
-  const [recipeDescription, setRecipeDescription] = useState("");
-	// Ingredient Entry Variables
-	const [ingredientName, setIngredientName] = useState("");
-	const [ingredientUnit, setIngredientUnit] = useState("");
+// Components
+import RecipeSubmit from "../../components/RecipeSubmit/RecipeSubmit";
+import IngredientSubmit from "../../components/IngredientSubmit/IngredientSubmit";
+import DirectionSubmit from "../../components/DirectionSubmit/DirectionSubmit";
 
-  async function handleRecipeFetch() {
-    setRecipeList(await getRecipes());
-  }
+export default function RecipeDetails() {
+  const navigate = useNavigate();
+  const { setPageAlert } = useContext(AlertContext);
+
+  // All ingredients
+  const [allIngredients, setAllIngredients] = useState([]);
+
+  // Recipe Details
+  const [recipe, setRecipe] = useState({});
+  const [callsFors, setCallsFors] = useState([]);
+  const [directions, setDirections] = useState([]);
+
   async function handleIngredientFetch() {
-    setIngredientList(await getIngredients());
-  }
-
-  const handleRecipeAdd = async () => {
-		await addRecipe(recipeName.trim(), recipeDescription.trim());
-    setRecipeName("");
-    setRecipeDescription("");
-    await handleRecipeFetch();
-  }
-
-	const handleIngredientAdd = async () => {
-		//event.preventDefault();
-    await addIngredient(ingredientName.trim(), ingredientUnit.trim());
-		setIngredientName("");
-		setIngredientUnit("");
-    await handleIngredientFetch();
+    setAllIngredients(await getIngredients());
   }
 
   useEffect(() => {
-    handleRecipeFetch();
     handleIngredientFetch();
   }, []);
 
+  // Log State Variables
   useEffect(() => {
-    console.log("recipeName", recipeName.trim());
-    console.log("recipeDescription", recipeDescription.trim());
+    console.log("recipe", recipe);
+  }, [recipe]);
+  useEffect(() => {
+    console.log("directions", directions);
+  }, [directions]);
+  useEffect(() => {
+    console.log("callsFors", callsFors);
+  }, [callsFors]);
+  useEffect(() => {
+    console.log("allIngredients", allIngredients);
+  }, [allIngredients]);
 
-  }, [recipeName, recipeDescription]);
+  async function handleSubmit(event) {
+    await addRecipe(event, { recipe, directions, callsFors }, setPageAlert, navigate);
+    // TODO: Add Directions and Ingredients on Backend
+    // if (recipeID) {
+    //   await handleSubmitDirections(recipeID);
+    //   await handleSubmitIngredients(recipeID);
+      
+    // }
+  }
+
+  async function handleSubmitDirections(recipeID) {
+    // Add all directions in state
+    for (const direction of directions) {
+      console.log("ADD " + direction.instruction.trim());
+      await addDirection(
+        recipeID,
+        direction.index,
+        direction.instruction.trim()
+      );
+    }
+  }
+
+  async function handleSubmitIngredients(recipeID) {
+    for (const callsFor of callsFors) {
+      // If ingredient object does not have an id (newly created) add it to db first and save new id to callsfor object
+      if (!callsFor.ingredient._id) {
+        const {
+          json: { _id: newIngredientID },
+        } = await addIngredient(
+          callsFor.ingredient.ingredientName,
+          callsFor.ingredient.unit
+        );
+        callsFor.ingredient._id = newIngredientID;
+      }
+
+      // add callsfor to db
+      console.log("ADD " + callsFor.ingredient._id);
+      await addCallsFor(
+        recipeID,
+        callsFor.ingredient._id,
+        1,
+        callsFor.modifier.trim()
+      );
+    }
+  }
 
   return (
     <>
-      <h1>Recipes</h1>
-      <h2>Add Recipe:</h2>
-      <form onSubmit={handleRecipeAdd}>
-        <label htmlFor="recipeName">Name</label>
-        <br />
-        <input
-          type="text"
-          id="recipeName"
-          name="recipeName"
-          placeholder="..."
-          onChange={(event) => setRecipeName(event.target.value)}
+      <Button className="mb-3" onClick={(event) => handleSubmit(event)}>
+        Submit
+      </Button>
+      <h1>Create New Recipe</h1>
+      <Form>
+        <RecipeSubmit editMode={true} recipe={recipe} setRecipe={setRecipe} />
+        <h2>Ingredients</h2>
+        <IngredientSubmit
+          editMode={true}
+          allIngredients={allIngredients}
+          handleIngredientFetch={handleIngredientFetch}
+          callsFors={callsFors}
+          setCallsFors={setCallsFors}
+          recipeID={""}
         />
-        <br />
-        <label htmlFor="recipeDescription">Description</label>
-        <br />
-        <textarea
-          id="recipeDescription"
-          name="recipeDescription"
-          placeholder="..."
-          onChange={(event) => setRecipeDescription(event.target.value)}
+        <h2>Directions</h2>
+        <DirectionSubmit
+          editMode={true}
+          directions={directions}
+          setDirections={setDirections}
+          recipeID={""}
         />
-        <br />
-        <input type="submit" value="Submit"/>
-      </form>
-      <ul>
-        {recipeList &&
-          recipeList.map((recipe, index) => {
-            return (
-              <li key={index}>
-                <a href={"/recipes/" + recipe._id}>{recipe.dishName}</a>
-                &nbsp;-&nbsp;
-                {recipe.description.trim()}
-                {/* {recipe.map((recipe, index) => {})} */}
-                {/* <button onClick={postData}>Edit Recipe</button>&nbsp;
-						<button onClick={postData}>Delete Recipe</button> */}
-              </li>
-            );
-          })}
-      </ul>
-      <h1>Ingredients</h1>
-      <h2>Add Ingredient:</h2>
-      <form onSubmit={(event) => handleIngredientAdd(event)}>
-        <label htmlFor="ingredientName">Name</label>
-        <br />
-        <input
-          type="text"
-          id="ingredientName"
-          name="ingredientName"
-          placeholder="..."
-          onChange={(event) => setIngredientName(event.target.value)}
-        />
-				<br />
-        <label htmlFor="ingredientUnit">Unit</label>
-        <br />
-        <input
-          type="text"
-          id="ingredientUnit"
-          name="ingredientUnit"
-          placeholder="..."
-          onChange={(event) => setIngredientUnit(event.target.value)}
-        />
-        <br />
-        <input type="submit" />
-      </form>
-      <ul>
-        {ingredientList &&
-          ingredientList.map((ingredient, index) => {
-            return (
-              <li key={index}>
-                {/* <a href={"/recipes/" + ingredient._id}> */}
-                {ingredient.ingredientName.trim()}
-                {/* </a>
-						&nbsp;-&nbsp;{ingredient.description} */}
-
-                {/* {recipe.map((recipe, index) => {})} */}
-
-                {/* <button onClick={postData}>Edit Recipe</button>&nbsp;
-						<button onClick={postData}>Delete Recipe</button> */}
-              </li>
-            );
-          })}
-      </ul>
+      </Form>
     </>
   );
 }
