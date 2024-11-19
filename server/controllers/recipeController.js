@@ -11,7 +11,8 @@ const controller = {
       .find()
       .then((recipes) => {
         if (recipes && recipes[0]) {
-          recipes.sort((a, b) => a.dishName - b.dishName);
+          // Sort recipes by dish name
+          recipes.sort((a, b) => a.dishName.localeCompare(b.dishName));
           res.json(recipes);
         } else {
           res.status(404).send("No Recipes Found");
