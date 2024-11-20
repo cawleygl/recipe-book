@@ -7,6 +7,8 @@ const ingredientRoutes = express.Router();
 ingredientRoutes.get('/', controller.all);
 // POST /ingredients - Create new ingredient
 ingredientRoutes.post('/', controller.create);
+// PUT /recipes/:id - Update existing ingredient
+ingredientRoutes.put('/:id', controller.update);
 // DELETE /ingredients/:id - Delete existing ingredient
 ingredientRoutes.delete('/:id', controller.delete);
 

@@ -1,20 +1,20 @@
 const volumetricUnits = {
   TEASPOON: { name: "teaspoon", abbreviation: "tsp" },
   TABLESPOON: { name: "tablespoon", abbreviation: "tbsp" },
+  FLUIDOUNCE: { name: "fluid ounce", abbreviation: "oz fl" },
   CUP: { name: "cup", abbreviation: "cup" },
   PINT: { name: "pint", abbreviation: "pint" },
   QUART: { name: "quart", abbreviation: "qt" },
   GALLON: { name: "gallon", abbreviation: "gal" },
-  FLUIDOUNCE: { name: "fluid ounce", abbreviation: "floz" },
 };
 
-const weightUnits = {
-	WEIGHTOUNCE: { name: "ounce", abbreviation: "oz" },
-	POUND: { name: "pound", abbreviation: "lb" },
-	GRAM: { name: "gram", abbreviation: "g" },
-	KILOGRAM: { name: "kilogram", abbreviation: "kg" },
-	MILLIGRAM: { name: "milligram", abbreviation: "mg" },
-}
+// const weightUnits = {
+// 	WEIGHTOUNCE: { name: "ounce", abbreviation: "wt oz" },
+// 	POUND: { name: "pound", abbreviation: "lb" },
+// 	GRAM: { name: "gram", abbreviation: "g" },
+// 	KILOGRAM: { name: "kilogram", abbreviation: "kg" },
+// 	MILLIGRAM: { name: "milligram", abbreviation: "mg" },
+// }
 
 function convertVolumetricUnits(amount, inputUnit, outputUnit) {
   let input = "Unknown Input Unit";
@@ -69,10 +69,8 @@ function convertVolumetricUnits(amount, inputUnit, outputUnit) {
       output = input / 768;
       break;
     default:
-      return output;
   }
-
-  return `${amount} ${inputUnit} = ${output} ${outputUnit}`;
+  return output;
 }
 
 export { volumetricUnits, convertVolumetricUnits };

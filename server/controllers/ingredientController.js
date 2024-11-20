@@ -27,6 +27,30 @@ const controller = {
 			})
 			.catch((error) => next(error));
 	},
+	// PUT /ingredients/:id/ - Update existing ingredient
+	update: async (req, res, next) => {
+		let ingredient = req.body;
+		let id = req.params.id;
+
+		model
+			.findByIdAndUpdate(id, ingredient, {
+				useFindAndModify: false,
+				runValidators: true,
+			})
+			.then((ingredient) => {
+				if (ingredient) {
+					res.json(ingredient);
+				} else {
+					res.status(404).json(`No Ingredient Found with ID ${req.params.id}`);
+					next(error);
+				}
+			})
+			.catch((error) => {
+				res.status(400).json(error);
+				next(error);
+			});
+	},
+	// DELETE /ingredients/:id/ - Delete an ingredient
 	delete: async (req, res, next) => {
 		let id = req.params.id;
 

@@ -1,0 +1,11 @@
+.questionButton {
+	border-radius: 50%;
+	padding-top: 0;
+	padding-bottom: 0;
+	padding-left: 7px;
+	padding-right: 7px;
+	border: solid black 2px;
+}
+.questionButton:hover {
+	border: solid black 2px;
+}

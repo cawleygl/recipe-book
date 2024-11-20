@@ -105,18 +105,35 @@ export async function getIngredients() {
   return ingredients;
 }
 
-export async function addIngredient(ingredientName) {
+export async function addIngredient(ingredientBody) {
   try {
-    const sampleData = {
-      ingredientName: ingredientName
-    };
     const response = await fetch("http://localhost:5050/ingredients", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(sampleData),
+      body: JSON.stringify(ingredientBody),
     });
+    return { response: response, json: await response.json() };
+  } catch (error) {
+    const message = `An error has occurred: ${error}`;
+    console.error(message);
+  }
+}
+
+export async function editIngredient(ingredientID, ingredientBody) {
+  try {
+    const response = await fetch(
+      `http://localhost:5050/ingredients/${ingredientID.toString()}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(ingredientBody),
+      }
+    );
+
     return { response: response, json: await response.json() };
   } catch (error) {
     const message = `An error has occurred: ${error}`;
