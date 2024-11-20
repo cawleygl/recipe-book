@@ -1,11 +1,12 @@
 const volumetricUnits = {
-  TEASPOON: { name: "teaspoon", abbreviation: "tsp" },
-  TABLESPOON: { name: "tablespoon", abbreviation: "tbsp" },
-  FLUIDOUNCE: { name: "fluid ounce", abbreviation: "oz fl" },
-  CUP: { name: "cup", abbreviation: "cup" },
-  PINT: { name: "pint", abbreviation: "pint" },
-  QUART: { name: "quart", abbreviation: "qt" },
-  GALLON: { name: "gallon", abbreviation: "gal" },
+  WHOLE: { code: "whole", name: "", abbreviation: ""},
+  TEASPOON: { code: "teaspoon", name: "teaspoon", abbreviation: "tsp" },
+  TABLESPOON: { code: "tablespoon", name: "tablespoon", abbreviation: "tbsp" },
+  FLUIDOUNCE: { code: "fluid ounce", name: "ounce", abbreviation: "oz fl" },
+  CUP: { code: "cup", name: "cup", abbreviation: "cup" },
+  PINT: { code: "pint", name: "pint", abbreviation: "pint" },
+  QUART: { code: "quart", name: "quart", abbreviation: "qt" },
+  GALLON: { code: "gallon",  name: "gallon", abbreviation: "gal" },
 };
 
 // const weightUnits = {

@@ -9,6 +9,7 @@ import {
   Collapse,
 } from "react-bootstrap";
 import { deleteCallsFor } from "../../utils/api";
+import { volumetricUnits } from "../../utils/tools";
 
 import "./IngredientSubmit.css";
 
@@ -17,12 +18,11 @@ export default function IngredientSubmit({
   allIngredients,
   callsFors,
   setCallsFors,
-  recipeID
+  recipeID,
 }) {
   const [options, setOptions] = useState([]);
   // Ingredient Add Inputs
   const [ingredientSearchTerm, setIngredientSearchTerm] = useState("");
-  const [ingredientModifier, setIngredientModifier] = useState("");
 
   // Log state variables
   useEffect(() => {
@@ -31,9 +31,6 @@ export default function IngredientSubmit({
   useEffect(() => {
     console.log("ingredientSearchTerm", ingredientSearchTerm);
   }, [ingredientSearchTerm]);
-  useEffect(() => {
-    console.log("ingredientModifier", ingredientModifier);
-  }, [ingredientModifier]);
 
   // Check if ingredient is already added
   function checkDuplicateIngredients(event, ingredientBody) {
@@ -51,10 +48,10 @@ export default function IngredientSubmit({
 
   function handleAddIngredientToRecipe(
     event,
-    ingredientBody,
-    ingredientModifier
+    ingredientBody
   ) {
     event.preventDefault();
+    console.log("ingredientBody", ingredientBody);
     // Check if ingredient is already added
     if (checkDuplicateIngredients(event, ingredientBody)) return;
 
@@ -62,17 +59,18 @@ export default function IngredientSubmit({
       const newValues = [...prevValues];
       newValues.push({
         ingredient: ingredientBody,
-        amount: 1,
-        modifier: ingredientModifier,
+        unit: "whole",
+        amount: "",
+        modifier: ""
       });
       return newValues;
     });
 
     console.log(
       "Submit Ingredient:",
-      ingredientBody + ", " + ingredientModifier
+      ingredientBody
     );
-    setIngredientModifier("");
+
     setIngredientSearchTerm("");
     setOptions([]);
   }
@@ -122,15 +120,14 @@ export default function IngredientSubmit({
     }
   };
 
-  function handleModifierEdit(event, newValue, id) {
+  function handleIngredientFieldEdit(event, field, newValue, id) {
     event.preventDefault();
-    console.log(id);
     setCallsFors((prevValues) => {
       const newValues = [...prevValues];
-      const editIngredient = newValues.find(
+      const editCallsFor = newValues.find(
         (callsFor) => callsFor.ingredient._id === id
       );
-      editIngredient.modifier = newValue;
+      editCallsFor[field] = newValue;
       return newValues;
     });
   }
@@ -143,7 +140,7 @@ export default function IngredientSubmit({
         (callsFor) => callsFor.ingredient._id === ingredientID
       );
       if (newValues[deleteIndex]._id) {
-        deleteCallsFor(recipeID, newValues[deleteIndex]._id); 
+        deleteCallsFor(recipeID, newValues[deleteIndex]._id);
       }
       newValues.splice(deleteIndex, 1);
       return newValues;
@@ -163,30 +160,68 @@ export default function IngredientSubmit({
       <>
         <Container>
           <Form.Group className="mb-3">
-            {callsFors.map((ingredient) => {
+            {callsFors.map((callsFor) => {
               return (
-                <InputGroup key={ingredient.ingredient.ingredientName}>
+                <InputGroup key={callsFor.ingredient.ingredientName}>
+                  <Form.Control
+                    type="number"
+                    value={callsFor.amount}
+                    min="0"
+                    placeholder="Add Amount"
+                    onChange={(event) =>
+                      handleIngredientFieldEdit(
+                        event,
+                        "amount",
+                        event.target.value,
+                        callsFor.ingredient._id
+                      )
+                    }
+                  />
+                  <Form.Select
+                    type="text"                                  
+                    defaultValue="whole" 
+                    onChange={(event) => {
+                      handleIngredientFieldEdit(
+                        event,
+                        "unit",
+                        event.target.value,
+                        callsFor.ingredient._id
+                      );
+                    }}
+                  >
+                    <option disabled value={""}>
+                      Add Unit
+                    </option>
+                    {Object.values(volumetricUnits).map((unit, index) => {
+                      return (
+                        <option key={index} value={unit.code}>
+                          {unit.code}
+                        </option>
+                      );
+                    })}
+                  </Form.Select>
                   <InputGroup.Text>
-                    {ingredient.ingredient.ingredientName}
+                    {callsFor.ingredient.ingredientName}
                   </InputGroup.Text>
                   <Form.Control
                     type="text"
-                    value={ingredient.modifier}
+                    value={callsFor.modifier}
                     placeholder="Add Modifier"
                     onChange={(event) =>
-                      handleModifierEdit(
+                      handleIngredientFieldEdit(
                         event,
+                        "modifier",
                         event.target.value,
-                        ingredient.ingredient._id
+                        callsFor.ingredient._id
                       )
                     }
                   />
                   <Button
                     onClick={(event) =>
-                      handleIngredientRemove(event, ingredient.ingredient._id)
+                      handleIngredientRemove(event, callsFor.ingredient._id)
                     }
                   >
-                    Remove
+                    <i className="fa-solid fa-ban"></i>
                   </Button>
                 </InputGroup>
               );
@@ -194,7 +229,7 @@ export default function IngredientSubmit({
           </Form.Group>
         </Container>
         <Form.Group className="mb-3">
-          <Form.Label htmlFor="addIngredient">Add Ingredients</Form.Label>
+          <Form.Label htmlFor="addIngredient">Choose Ingredients</Form.Label>
           <InputGroup>
             <Form.Control
               name="addIngredient"
@@ -203,12 +238,6 @@ export default function IngredientSubmit({
               placeholder="Ingredient"
               onChange={(event) => handleIngredientSearch(event)}
             />
-            <Form.Control
-              type="text"
-              value={ingredientModifier}
-              placeholder="Modifier"
-              onChange={(event) => setIngredientModifier(event.target.value)}
-            />
           </InputGroup>
           <Collapse in={ingredientSearchTerm !== ""}>
             <ListGroup
@@ -216,26 +245,24 @@ export default function IngredientSubmit({
               className={options.length > 6 ? "scrollable" : ""}
             >
               {options
-                .sort((a, b) => a.ingredientName - b.ingredientName)
-                .map((ingredient) => {
-                  return (
-                    <ListGroup.Item
-                      key={ingredient._id}
-                      action
-                      variant="primary"
-                      disabled={disableAddedIngredients(ingredient._id)}
-                      onClick={(event) =>
-                        handleAddIngredientToRecipe(
-                          event,
-                          ingredient,
-                          ingredientModifier
-                        )
-                      }
-                    >
-                      {"Add " + ingredient.ingredientName + " To Recipe"}
-                    </ListGroup.Item>
-                  );
-                })}
+              .map((ingredient) => {
+                return (
+                  <ListGroup.Item
+                    key={ingredient._id}
+                    action
+                    variant="primary"
+                    disabled={disableAddedIngredients(ingredient._id)}
+                    onClick={(event) =>
+                      handleAddIngredientToRecipe(
+                        event,
+                        ingredient
+                      )
+                    }
+                  >
+                    {"Add " + ingredient.ingredientName + " To Recipe"}
+                  </ListGroup.Item>
+                );
+              })}
               <ListGroup.Item
                 action
                 variant="primary"
@@ -252,11 +279,14 @@ export default function IngredientSubmit({
     return (
       <>
         <ListGroup className="mb-3">
-          {callsFors.map((ingredient) => {
+          {callsFors.map((callsFor) => {
             return (
-              <ListGroup.Item key={ingredient.ingredient._id}>
-                {ingredient.ingredient.ingredientName}
-                {ingredient.modifier ? ", " + ingredient.modifier : ""}
+              <ListGroup.Item key={callsFor.ingredient._id}>
+                {callsFor.amount +
+                  " " +
+                  (callsFor.unit ? callsFor.unit + " " : "")}
+                {callsFor.ingredient.ingredientName}
+                {callsFor.modifier ? ", " + callsFor.modifier : ""}
               </ListGroup.Item>
             );
           })}
