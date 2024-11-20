@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   getOneRecipe,
   getIngredients,
@@ -13,6 +13,7 @@ import {
   addCallsFor,
   deleteCallsFor,
   editCallsFor,
+  deleteRecipe,
 } from "../../utils/api";
 import { Form, Button, ButtonGroup } from "react-bootstrap";
 
@@ -22,6 +23,7 @@ import IngredientSubmit from "../../components/IngredientSubmit/IngredientSubmit
 import DirectionSubmit from "../../components/DirectionSubmit/DirectionSubmit";
 
 export default function RecipeDetails() {
+  const navigate = useNavigate();
   const [editMode, setEditMode] = useState(false);
   const params = useParams();
   const [recipeID] = useState(params.id?.toString() || undefined);
@@ -43,10 +45,18 @@ export default function RecipeDetails() {
     setAllIngredients(await getIngredients());
   }
 
+  async function handleDeleteRecipe(recipeID) {
+    if (!confirm(`Are you sure you'd like to delete ${recipe.dishName}?`))
+      return;
+
+    await deleteRecipe(recipeID);
+    navigate(`/recipes`);
+  }
+
   useEffect(() => {
     handleRecipeFetch();
   }, [recipeID]);
-  
+
   useEffect(() => {
     handleIngredientFetch();
   }, []);
@@ -184,15 +194,27 @@ export default function RecipeDetails() {
         <>
           {editMode ? (
             <>
-            <ButtonGroup className="mb-3">
-              <Button onClick={() => handleSubmitRecipeEdits(true)}>Apply</Button>
-              <Button onClick={() => handleSubmitRecipeEdits(false)}>Save</Button>
-              <Button onClick={() => setEditMode(false)}>Close</Button>
-            </ButtonGroup>
-            <h1>Edit Recipe</h1>
+              <ButtonGroup className="mb-3">
+                <Button onClick={() => handleSubmitRecipeEdits(true)}>
+                  Apply
+                </Button>
+                <Button onClick={() => handleSubmitRecipeEdits(false)}>
+                  Save
+                </Button>
+                <Button onClick={() => setEditMode(false)}>Close</Button>
+                <Button
+                  variant="danger"
+                  onClick={() => handleDeleteRecipe(recipeID)}
+                >
+                  <i className="fa-solid fa-trash"></i>
+                </Button>
+              </ButtonGroup>
+              <h1>Edit Recipe</h1>
             </>
           ) : (
-            <Button className="mb-3" onClick={() => setEditMode(true)}>Edit</Button>
+            <Button className="mb-3" onClick={() => setEditMode(true)}>
+              Edit
+            </Button>
           )}
           <Form>
             <RecipeSubmit
