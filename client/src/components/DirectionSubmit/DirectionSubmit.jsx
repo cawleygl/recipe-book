@@ -1,12 +1,17 @@
 import PropTypes from "prop-types";
-import { Container, Form, Button, InputGroup, ListGroup } from "react-bootstrap";
+import {
+  Form,
+  Button,
+  InputGroup,
+  ListGroup,
+} from "react-bootstrap";
 import { deleteDirection } from "../../utils/api";
 
 export default function DirectionSubmit({
   editMode,
   directions,
   setDirections,
-  recipeID
+  recipeID,
 }) {
   function handleDirectionEdit(event, newValue, index) {
     event.preventDefault();
@@ -34,7 +39,7 @@ export default function DirectionSubmit({
         (direction) => direction._id === directionID
       );
       if (newValues[deleteIndex]._id) {
-        deleteDirection(recipeID, newValues[deleteIndex]._id); 
+        deleteDirection(recipeID, newValues[deleteIndex]._id);
       }
       newValues.splice(deleteIndex, 1);
       // Reallocate indicies
@@ -82,7 +87,10 @@ export default function DirectionSubmit({
   if (editMode)
     return (
       <Form.Group>
-        <Container className="mb-3">
+          <Button className="mb-2" onClick={(event) => handleDirectionAdd(event)}>
+          <i className="fa-solid fa-plus"></i>
+          </Button>
+
           {directions
             .sort((a, b) => a.index - b.index)
             .map((direction) => {
@@ -97,29 +105,38 @@ export default function DirectionSubmit({
                     placeholder="New Direction"
                     value={direction.instruction}
                     onChange={(event) =>
-                      handleDirectionEdit(event, event.target.value, direction.index)
+                      handleDirectionEdit(
+                        event,
+                        event.target.value,
+                        direction.index
+                      )
                     }
                   />
                   <Button
-                    onClick={(event) => handleDirectionMoveUp(event, direction.index)}
+                    onClick={(event) =>
+                      handleDirectionMoveUp(event, direction.index)
+                    }
                   >
                     <i className="fa-solid fa-chevron-up"></i>
                   </Button>
                   <Button
-                    onClick={(event) => handleDirectionMoveDown(event, direction.index)}
+                    onClick={(event) =>
+                      handleDirectionMoveDown(event, direction.index)
+                    }
                   >
                     <i className="fa-solid fa-chevron-down"></i>
                   </Button>
-                  <Button 
-                  variant="danger"
-                  onClick={(event) => handleDirectionDelete(event, direction._id)}>
+                  <Button
+                    variant="danger"
+                    onClick={(event) =>
+                      handleDirectionDelete(event, direction._id)
+                    }
+                  >
                     <i className="fa-solid fa-trash"></i>
                   </Button>
                 </InputGroup>
               );
             })}
-            </Container>
-        <Button onClick={(event) => handleDirectionAdd(event)}>Add New Direction</Button>
       </Form.Group>
     );
   else
@@ -142,5 +159,5 @@ DirectionSubmit.propTypes = {
   editMode: PropTypes.bool,
   directions: PropTypes.arrayOf(PropTypes.any),
   setDirections: PropTypes.func,
-  recipeID: PropTypes.string
+  recipeID: PropTypes.string,
 };
