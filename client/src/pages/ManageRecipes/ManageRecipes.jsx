@@ -19,6 +19,7 @@ export default function CreateRecipe() {
   return (
     <>
       <h1>Recipes</h1>
+      <p>{`Select a Recipe to view its Recipe page.`}</p>
       <ListGroup>
         {recipeList &&
           recipeList.map((recipe, index) => {
