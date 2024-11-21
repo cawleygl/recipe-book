@@ -10,4 +10,4 @@ Future developments include further customization of recipes including editing i
 MongoDB, Express.js, Node.js and Node Package Manager, React.js
 
 ## Screenshot
-![Screenshot 2024-11-20 at 10 52 19 PM](https://github.com/user-attachments/assets/8420eff3-0a62-470d-bfdc-9539ae00e498)
+![Screenshot 2024-11-20 at 10 52 19 PM](https://github.com/user-attachments/assets/ed82b4ed-bad7-402b-a438-956c7bae65e9)
