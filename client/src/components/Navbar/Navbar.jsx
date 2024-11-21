@@ -1,10 +1,12 @@
 import React from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 
+import "./Navbar.css";
+
 export default function GlobalNavbar() {
   return (
     <>
-      <Navbar expand="lg" className="bg-dark bg-gradient mb-3" data-bs-theme="dark">
+      <Navbar expand="lg" className="bg-primary bg-gradient mb-3" data-bs-theme="dark">
         <Container>
           <Navbar.Brand href="/">Recipe Book</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />

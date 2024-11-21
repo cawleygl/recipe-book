@@ -23,6 +23,11 @@ function formatUnitName(code, amount) {
   else return name + "s";
 }
 
+function formatIngredientName(ingredientName, amount, unit) {
+  if (unit === "whole" && amount > 1) return ingredientName + "s";
+  else return ingredientName;
+}
+
 function convertVolumetricUnits(amount, inputUnit, outputUnit) {
   let input = "Unknown Input Unit";
   let output = "Unknown Output Unit";
@@ -80,4 +85,4 @@ function convertVolumetricUnits(amount, inputUnit, outputUnit) {
   return output;
 }
 
-export { volumetricUnits, convertVolumetricUnits, formatUnitName };
+export { volumetricUnits, convertVolumetricUnits, formatUnitName, formatIngredientName };

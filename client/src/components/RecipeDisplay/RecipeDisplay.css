@@ -1,7 +1,10 @@
 .recipeCard {
-	border: solid gray 3px;
-	border-radius: 20px;
-	box-shadow: 5px 5px 5px gray;
-	padding-top: 5%;
-	padding-bottom: 20%;
+	box-shadow: 4px 4px 4px rgb(176, 176, 176);
+	border: solid 1px #95c0ff;
+	background-color: #dceaff;
+}
+
+.recipeCardHeader {
+	background-color: #b3d1ff;
+	color: #052c65;
 }

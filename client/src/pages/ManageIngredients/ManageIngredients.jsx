@@ -146,7 +146,7 @@ export default function CreateRecipe() {
                 as the modifier on the recipe. `}
                     <strong>{`Being specific with the ingredients here
                 will help you combine ingredients from different recipes in 
-                shopping lists.`}</strong>
+                shopping lists (WIP).`}</strong>
                   </p>
                   <p>
                     {`If there's multiple items
@@ -227,41 +227,6 @@ export default function CreateRecipe() {
           </ListGroup>
         </Col>
       </Row>
-      {/* <p>{`${unitAmount} ${unitInput} = ${convertVolumetricUnits(
-        unitAmount,
-        unitInput,
-        unitOutput
-      )} ${unitOutput}`}</p>
-      <input
-        type="number"
-        id="unitAmount"
-        name="unitAmount"
-        placeholder="Amount"
-        value={unitAmount}
-        onChange={(event) => setUnitAmount(event.target.value)}
-      />
-      <select
-        id="unitInput"
-        name="unitInput"
-        onChange={(event) => setUnitInput(event.target.value)}
-      >
-        {volumetricUnits &&
-          Object.values(volumetricUnits).map((unit) => {
-            return <option key={unit.abbreviation}>{unit.name}</option>;
-          })}
-      </select>
-      &nbsp;{"->"}&nbsp;
-      <select
-        id="unitOutput"
-        name="unitOutput"
-        onChange={(event) => setUnitOutput(event.target.value)}
-      >
-        {volumetricUnits &&
-          Object.values(volumetricUnits).map((unit) => {
-            return <option key={unit.abbreviation}>{unit.name}</option>;
-          })}
-      </select>
-      <br /> */}
     </>
   );
 }

@@ -72,7 +72,6 @@ export default function RecipeDetails() {
         <Col>
           <Form>
             <RecipeEdit recipe={recipe} setRecipe={setRecipe} />
-            <h2>Ingredients</h2>
             <IngredientEdit
               allIngredients={allIngredients}
               handleIngredientFetch={handleIngredientFetch}
@@ -80,7 +79,6 @@ export default function RecipeDetails() {
               setCallsFors={setCallsFors}
               recipeID={""}
             />
-            <h2>Directions</h2>
             <DirectionEdit
               directions={directions}
               setDirections={setDirections}

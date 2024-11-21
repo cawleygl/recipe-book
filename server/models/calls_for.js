@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const calls_forSchema = new Schema({
 	recipe: {type: Schema.Types.ObjectId, ref: 'Recipe', required: [true, 'Recipe is required']},
 	ingredient: {type: Schema.Types.ObjectId, ref: 'Ingredient', required: [true, 'Ingredient is required']},
-	amount: { type: Number, min: [0.01, 'Amount must greater than 0'], required: [true, 'Amount is required'], default: 0},
+	amount: { type: Number, min: [0, 'Amount must be greater than 0']},
 	unit: { type: String, enum: [
 		"teaspoon",
 		"tablespoon",

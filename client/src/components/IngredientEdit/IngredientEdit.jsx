@@ -154,10 +154,7 @@ export default function IngredientEdit({
         <Form.Label htmlFor="addIngredient">Choose Ingredients</Form.Label>
         {callsFors.map((callsFor) => {
           return (
-            <InputGroup
-              key={callsFor.ingredient.ingredientName}
-              className="mb-3"
-            >
+            <InputGroup key={callsFor.ingredient.ingredientName}>
               <InputGroup.Text>-</InputGroup.Text>
               <Form.Control
                 type="number"
@@ -223,6 +220,7 @@ export default function IngredientEdit({
           );
         })}
         <Form.Control
+          className="mt-2"
           name="addIngredient"
           type="text"
           value={ingredientSearchTerm}
