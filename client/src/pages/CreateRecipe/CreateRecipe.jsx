@@ -7,13 +7,14 @@ import {
   addIngredient,
   addCallsFor,
 } from "../../utils/api";
-import { Form, Button } from "react-bootstrap";
+import { Row, Col, Form, Button, ListGroup } from "react-bootstrap";
 import { AlertContext } from "../../App";
 
 // Components
-import RecipeSubmit from "../../components/RecipeSubmit/RecipeSubmit";
-import IngredientSubmit from "../../components/IngredientSubmit/IngredientSubmit";
-import DirectionSubmit from "../../components/DirectionSubmit/DirectionSubmit";
+import RecipeEdit from "../../components/RecipeEdit/RecipeEdit";
+import RecipeDisplay from "../../components/RecipeDisplay/RecipeDisplay";
+import IngredientEdit from "../../components/IngredientEdit/IngredientEdit";
+import DirectionEdit from "../../components/DirectionEdit/DirectionEdit";
 
 export default function RecipeDetails() {
   const navigate = useNavigate();
@@ -50,76 +51,54 @@ export default function RecipeDetails() {
   }, [allIngredients]);
 
   async function handleSubmit(event) {
-    await addRecipe(event, { recipe, directions, callsFors }, setPageAlert, navigate);
-    // TODO: Add Directions and Ingredients on Backend
-    // if (recipeID) {
-    //   await handleSubmitDirections(recipeID);
-    //   await handleSubmitIngredients(recipeID);
-      
-    // }
-  }
-
-  async function handleSubmitDirections(recipeID) {
-    // Add all directions in state
-    for (const direction of directions) {
-      console.log("ADD " + direction.instruction.trim());
-      await addDirection(
-        recipeID,
-        direction.index,
-        direction.instruction.trim()
-      );
-    }
-  }
-
-  async function handleSubmitIngredients(recipeID) {
-    for (const callsFor of callsFors) {
-      // If ingredient object does not have an id (newly created) add it to db first and save new id to callsfor object
-      if (!callsFor.ingredient._id) {
-        const {
-          json: { _id: newIngredientID },
-        } = await addIngredient(
-          callsFor.ingredient.ingredientName,
-          callsFor.ingredient.unit
-        );
-        callsFor.ingredient._id = newIngredientID;
-      }
-
-      // add callsfor to db
-      console.log("ADD " + callsFor.ingredient._id);
-      await addCallsFor(
-        recipeID,
-        callsFor.ingredient._id,
-        1,
-        callsFor.modifier.trim()
-      );
-    }
+    await addRecipe(
+      event,
+      { recipe, directions, callsFors },
+      setPageAlert,
+      navigate
+    );
   }
 
   return (
     <>
-      <Button className="mb-3" onClick={(event) => handleSubmit(event)}>
-        Submit
-      </Button>
-      <h1>Create New Recipe</h1>
-      <Form>
-        <RecipeSubmit editMode={true} recipe={recipe} setRecipe={setRecipe} />
-        <h2>Ingredients</h2>
-        <IngredientSubmit
-          editMode={true}
-          allIngredients={allIngredients}
-          handleIngredientFetch={handleIngredientFetch}
-          callsFors={callsFors}
-          setCallsFors={setCallsFors}
-          recipeID={""}
-        />
-        <h2>Directions</h2>
-        <DirectionSubmit
-          editMode={true}
-          directions={directions}
-          setDirections={setDirections}
-          recipeID={""}
-        />
-      </Form>
+      <Row>
+        <h1>Create New Recipe</h1>
+        <p>
+          Start creating a new recipe from scratch. Click Submit to save your
+          recipe.
+        </p>
+      </Row>
+      <Row>
+        <Col>
+          <Form>
+            <RecipeEdit recipe={recipe} setRecipe={setRecipe} />
+            <h2>Ingredients</h2>
+            <IngredientEdit
+              allIngredients={allIngredients}
+              handleIngredientFetch={handleIngredientFetch}
+              callsFors={callsFors}
+              setCallsFors={setCallsFors}
+              recipeID={""}
+            />
+            <h2>Directions</h2>
+            <DirectionEdit
+              directions={directions}
+              setDirections={setDirections}
+              recipeID={""}
+            />
+            <Button className="mb-3" onClick={(event) => handleSubmit(event)}>
+              Submit
+            </Button>
+          </Form>
+        </Col>
+        <Col>
+          <RecipeDisplay
+            recipe={recipe}
+            directions={directions}
+            callsFors={callsFors}
+          />
+        </Col>
+      </Row>
     </>
   );
 }

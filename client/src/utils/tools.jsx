@@ -1,12 +1,12 @@
 const volumetricUnits = {
-  WHOLE: { code: "whole", name: "", abbreviation: ""},
+  WHOLE: { code: "whole", name: "", abbreviation: "" },
   TEASPOON: { code: "teaspoon", name: "teaspoon", abbreviation: "tsp" },
   TABLESPOON: { code: "tablespoon", name: "tablespoon", abbreviation: "tbsp" },
   FLUIDOUNCE: { code: "fluid ounce", name: "ounce", abbreviation: "oz fl" },
   CUP: { code: "cup", name: "cup", abbreviation: "cup" },
   PINT: { code: "pint", name: "pint", abbreviation: "pint" },
   QUART: { code: "quart", name: "quart", abbreviation: "qt" },
-  GALLON: { code: "gallon",  name: "gallon", abbreviation: "gal" },
+  GALLON: { code: "gallon", name: "gallon", abbreviation: "gal" },
 };
 
 // const weightUnits = {
@@ -17,9 +17,15 @@ const volumetricUnits = {
 // 	MILLIGRAM: { name: "milligram", abbreviation: "mg" },
 // }
 
+function formatUnitName(code, amount) {
+  const name = Object.values(volumetricUnits).find((unit) => unit.code === code).name;
+  if (amount == 1 || code === "whole") return name;
+  else return name + "s";
+}
+
 function convertVolumetricUnits(amount, inputUnit, outputUnit) {
   let input = "Unknown Input Unit";
-	let output = "Unknown Output Unit"
+  let output = "Unknown Output Unit";
 
   switch (inputUnit) {
     case volumetricUnits.TEASPOON.name:
@@ -74,4 +80,4 @@ function convertVolumetricUnits(amount, inputUnit, outputUnit) {
   return output;
 }
 
-export { volumetricUnits, convertVolumetricUnits };
+export { volumetricUnits, convertVolumetricUnits, formatUnitName };

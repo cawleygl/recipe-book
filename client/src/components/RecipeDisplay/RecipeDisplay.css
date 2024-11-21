@@ -1,0 +1,7 @@
+.recipeCard {
+	border: solid gray 3px;
+	border-radius: 20px;
+	box-shadow: 5px 5px 5px gray;
+	padding-top: 5%;
+	padding-bottom: 20%;
+}
