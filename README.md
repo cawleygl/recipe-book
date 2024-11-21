@@ -8,3 +8,6 @@ Future developments include further customization of recipes including editing i
 
 ## Technologies Used
 MongoDB, Express.js, Node.js and Node Package Manager, React.js
+
+## Screenshot
+![Screenshot 2024-11-20 at 10 52 19 PM](https://github.com/user-attachments/assets/8420eff3-0a62-470d-bfdc-9539ae00e498)
