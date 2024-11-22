@@ -5,12 +5,16 @@ import { formatUnitName, formatIngredientName } from "../../utils/tools";
 
 import "./RecipeDisplay.css";
 
-export default function RecipeDisplay({ recipe, directions, callsFors }) {
+export default function RecipeDisplay({ recipe, directions, callsFors, renderEditButton }) {
   return (
-    <Card className="recipeCard">
+    <Card className="recipeCard mt-4">
       <Card.Header className="recipeCardHeader">
-        <h1>{recipe.dishName || "Recipe"}</h1>
+        <h1>{recipe.dishName || "Recipe"}
+        {renderEditButton && renderEditButton()}
+        </h1>
+      
         <p>{recipe.description || "Description"}</p>
+        
       </Card.Header>
       <Card.Body className="recipeCardBody">
         <ListGroup className="mb-3">
@@ -38,17 +42,17 @@ export default function RecipeDisplay({ recipe, directions, callsFors }) {
         <ListGroup className="mb-3">
           <ListGroup.Item disabled>Directions</ListGroup.Item>
           {directions
-              .sort((a, b) => a.index - b.index)
-              .map((direction) => {
-                return (
-                  <ListGroup.Item key={direction.index}>
-                    {"Step " +
-                      (direction.index + 1) +
-                      ": " +
-                      direction.instruction}
-                  </ListGroup.Item>
-                );
-              })}
+            .sort((a, b) => a.index - b.index)
+            .map((direction) => {
+              return (
+                <ListGroup.Item key={direction.index}>
+                  {"Step " +
+                    (direction.index + 1) +
+                    ": " +
+                    direction.instruction}
+                </ListGroup.Item>
+              );
+            })}
         </ListGroup>
       </Card.Body>
     </Card>
@@ -59,4 +63,5 @@ RecipeDisplay.propTypes = {
   recipe: PropTypes.object,
   directions: PropTypes.array,
   callsFors: PropTypes.array,
+  renderEditButton: PropTypes.func
 };

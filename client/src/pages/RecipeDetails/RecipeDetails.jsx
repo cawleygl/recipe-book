@@ -6,13 +6,11 @@ import {
   editRecipe,
   deleteRecipe,
 } from "../../utils/api";
-import { Row, Col, Form, Button, ButtonGroup } from "react-bootstrap";
+import { Row, Col, Button, ButtonGroup } from "react-bootstrap";
 
 // Components
 import RecipeEdit from "../../components/RecipeEdit/RecipeEdit";
 import RecipeDisplay from "../../components/RecipeDisplay/RecipeDisplay";
-import IngredientEdit from "../../components/IngredientEdit/IngredientEdit";
-import DirectionEdit from "../../components/DirectionEdit/DirectionEdit";
 
 export default function RecipeDetails() {
   const navigate = useNavigate();
@@ -67,10 +65,37 @@ export default function RecipeDetails() {
     console.log("allIngredients", allIngredients);
   }, [allIngredients]);
 
-  async function handleSubmitRecipeEdits(editMode) {
+  async function handleSubmitRecipeEdits(event) {
     await editRecipe(recipeID, { recipe, directions, callsFors });
-    setEditMode(editMode);
+    setEditMode(
+      JSON.parse(event.nativeEvent.submitter.getAttribute("data-editMode"))
+    );
     handleRecipeFetch();
+  }
+
+  function renderSubmitEditButtons() {
+    return (
+      <ButtonGroup className="mb-3">
+        <Button type="submit" data-editmode="true">
+          Apply
+        </Button>
+        <Button type="submit" data-editmode="false">
+          Save
+        </Button>
+        <Button onClick={() => setEditMode(false)}>Close</Button>
+        <Button variant="danger" onClick={() => handleDeleteRecipe(recipeID)}>
+          <i className="fa-solid fa-trash"></i>
+        </Button>
+      </ButtonGroup>
+    );
+  }
+
+  function renderEditButton() {
+    return (
+      <Button variant="outline-primary" className="mb-3 float-end" onClick={() => setEditMode(true)}>
+        <i className="fa-solid fa-pen-to-square"></i>
+      </Button>
+    );
   }
 
   return (
@@ -79,39 +104,28 @@ export default function RecipeDetails() {
         <>
           {editMode ? (
             <>
-              <ButtonGroup className="mb-3">
-                <Button onClick={() => handleSubmitRecipeEdits(true)}>
-                  Apply
-                </Button>
-                <Button onClick={() => handleSubmitRecipeEdits(false)}>
-                  Save
-                </Button>
-                <Button onClick={() => setEditMode(false)}>Close</Button>
-                <Button
-                  variant="danger"
-                  onClick={() => handleDeleteRecipe(recipeID)}
-                >
-                  <i className="fa-solid fa-trash"></i>
-                </Button>
-              </ButtonGroup>
-              <h1>Edit Recipe</h1>
+              <Row>
+                <h1>Edit Recipe</h1>
+                <p>
+                  Submit edits to an existing recipe. Click Save to save and
+                  close or Apply to save without closing.
+                </p>
+              </Row>
               <Row>
                 <Col xs={12} md={6}>
-                  <Form>
-                    <RecipeEdit recipe={recipe} setRecipe={setRecipe} />
-                    <IngredientEdit
-                      allIngredients={allIngredients}
-                      handleIngredientFetch={handleIngredientFetch}
-                      callsFors={callsFors}
-                      setCallsFors={setCallsFors}
-                      recipeID={recipeID}
-                    />
-                    <DirectionEdit
-                      directions={directions}
-                      setDirections={setDirections}
-                      recipeID={recipeID}
-                    />
-                  </Form>
+                  <RecipeEdit
+                    recipe={recipe}
+                    setRecipe={setRecipe}
+                    allIngredients={allIngredients}
+                    handleIngredientFetch={handleIngredientFetch}
+                    callsFors={callsFors}
+                    setCallsFors={setCallsFors}
+                    directions={directions}
+                    setDirections={setDirections}
+                    handleFormSubmit={handleSubmitRecipeEdits}
+                    renderSubmitButtonGroup={renderSubmitEditButtons}
+                    recipeID={recipeID}
+                  />
                 </Col>
                 <Col xs={12} md={6}>
                   <RecipeDisplay
@@ -124,13 +138,11 @@ export default function RecipeDetails() {
             </>
           ) : (
             <>
-              <Button className="mb-3" onClick={() => setEditMode(true)}>
-                Edit
-              </Button>
               <RecipeDisplay
                 recipe={recipe}
                 directions={directions}
                 callsFors={callsFors}
+                renderEditButton={renderEditButton}
               />
             </>
           )}

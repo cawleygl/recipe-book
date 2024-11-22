@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { Row, Col, Form, Button, InputGroup, ListGroup } from "react-bootstrap";
-import { deleteDirection } from "../../utils/api";
+import { deleteDirection } from "../../../utils/api";
 
 export default function DirectionEdit({ directions, setDirections, recipeID }) {
   function handleDirectionEdit(event, newValue, index) {

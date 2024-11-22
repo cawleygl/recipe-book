@@ -8,8 +8,8 @@ import {
   Container,
   Collapse,
 } from "react-bootstrap";
-import { deleteCallsFor } from "../../utils/api";
-import { volumetricUnits } from "../../utils/tools";
+import { deleteCallsFor } from "../../../utils/api";
+import { volumetricUnits } from "../../../utils/tools";
 
 import "./IngredientEdit.css";
 

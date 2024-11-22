@@ -3,18 +3,13 @@ import { useNavigate } from "react-router-dom";
 import {
   getIngredients,
   addRecipe,
-  addDirection,
-  addIngredient,
-  addCallsFor,
 } from "../../utils/api";
-import { Row, Col, Form, Button, ListGroup } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
 import { AlertContext } from "../../App";
 
 // Components
 import RecipeEdit from "../../components/RecipeEdit/RecipeEdit";
 import RecipeDisplay from "../../components/RecipeDisplay/RecipeDisplay";
-import IngredientEdit from "../../components/IngredientEdit/IngredientEdit";
-import DirectionEdit from "../../components/DirectionEdit/DirectionEdit";
 
 export default function RecipeDetails() {
   const navigate = useNavigate();
@@ -50,12 +45,20 @@ export default function RecipeDetails() {
     console.log("allIngredients", allIngredients);
   }, [allIngredients]);
 
-  async function handleSubmit(event) {
+  async function handleSubmitRecipeCreate(event) {
     await addRecipe(
       event,
       { recipe, directions, callsFors },
       setPageAlert,
       navigate
+    );
+  }
+
+  function renderSubmitCreateButton() {
+    return (
+      <Button className="mb-3" type="submit">
+        Submit
+      </Button>
     );
   }
 
@@ -69,27 +72,21 @@ export default function RecipeDetails() {
         </p>
       </Row>
       <Row>
-        <Col>
-          <Form>
-            <RecipeEdit recipe={recipe} setRecipe={setRecipe} />
-            <IngredientEdit
-              allIngredients={allIngredients}
-              handleIngredientFetch={handleIngredientFetch}
-              callsFors={callsFors}
-              setCallsFors={setCallsFors}
-              recipeID={""}
-            />
-            <DirectionEdit
-              directions={directions}
-              setDirections={setDirections}
-              recipeID={""}
-            />
-            <Button className="mb-3" onClick={(event) => handleSubmit(event)}>
-              Submit
-            </Button>
-          </Form>
+        <Col xs={12} md={6}>
+          <RecipeEdit
+            recipe={recipe}
+            setRecipe={setRecipe}
+            allIngredients={allIngredients}
+            callsFors={callsFors}
+            setCallsFors={setCallsFors}
+            directions={directions}
+            setDirections={setDirections}
+            handleFormSubmit={handleSubmitRecipeCreate}
+            renderSubmitButtonGroup={renderSubmitCreateButton}
+            recipeID={""}
+          />
         </Col>
-        <Col>
+        <Col xs={12} md={6}>
           <RecipeDisplay
             recipe={recipe}
             directions={directions}
