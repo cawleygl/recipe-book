@@ -20,7 +20,6 @@ export default function FlashMessage() {
   }, [pageAlert.show]);
 
   return (
-    // <Fade in={pageAlert.length}>
     <Container>
       <Alert
         dismissible
@@ -31,6 +30,5 @@ export default function FlashMessage() {
         {pageAlert.message}
       </Alert>
     </Container>
-    // </Fade>
   );
 }

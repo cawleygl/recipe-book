@@ -13,6 +13,7 @@ export default function CreateRecipe() {
   }
 
   useEffect(() => {
+    console.log("import.meta.env", import.meta.env);
     handleRecipeFetch();
   }, []);
 
@@ -21,7 +22,7 @@ export default function CreateRecipe() {
       <h1>Recipes</h1>
       <p>{`Select a Recipe to view its Recipe page.`}</p>
       <ListGroup>
-        {recipeList && recipeList.length &&
+        {recipeList && recipeList.length > 0 &&
           recipeList.map((recipe, index) => {
             return (
               <ListGroup.Item

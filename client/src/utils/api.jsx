@@ -1,5 +1,7 @@
+const uri = import.meta.env.VITE_SERVER_URI;
+
 export async function getRecipes() {
-  const response = await fetch(`http://localhost:5050/recipes/`);
+  const response = await fetch(`${uri}/recipes/`);
   if (!response.ok) {
     const message = `An error has occurred: ${response.statusText}`;
     console.error(message);
@@ -13,7 +15,7 @@ export async function getOneRecipe(recipeID) {
   if (!recipeID) return;
 
   const response = await fetch(
-    `http://localhost:5050/recipes/${recipeID.toString()}`
+    `${uri}/recipes/${recipeID.toString()}`
   );
   if (!response.ok) {
     const message = `An error has occurred: ${response.statusText}`;
@@ -27,7 +29,7 @@ export async function getOneRecipe(recipeID) {
 export async function addRecipe(event, recipeBody, setPageAlert, navigate) {
   event.preventDefault()
   try {
-    const response = await fetch("http://localhost:5050/recipes", {
+    const response = await fetch(`${uri}/recipes`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -56,7 +58,7 @@ export async function addRecipe(event, recipeBody, setPageAlert, navigate) {
 export async function editRecipe(recipeID, recipeBody) {
   try {
     const response = await fetch(
-      `http://localhost:5050/recipes/${recipeID.toString()}`,
+      `${uri}/recipes/${recipeID.toString()}`,
       {
         method: "PUT",
         headers: {
@@ -78,7 +80,7 @@ export async function deleteRecipe(recipeID) {
 
   try {
     const response = await fetch(
-      `http://localhost:5050/recipes/${recipeID.toString()}`,
+      `${uri}/recipes/${recipeID.toString()}`,
       {
         method: "DELETE",
         headers: {
@@ -95,7 +97,7 @@ export async function deleteRecipe(recipeID) {
 }
 
 export async function getIngredients() {
-  const response = await fetch(`http://localhost:5050/ingredients/`);
+  const response = await fetch(`${uri}/ingredients/`);
   if (!response.ok) {
     const message = `An error has occurred: ${response.statusText}`;
     console.error(message);
@@ -107,7 +109,7 @@ export async function getIngredients() {
 
 export async function addIngredient(ingredientBody) {
   try {
-    const response = await fetch("http://localhost:5050/ingredients", {
+    const response = await fetch("${uri}/ingredients", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -124,7 +126,7 @@ export async function addIngredient(ingredientBody) {
 export async function editIngredient(ingredientID, ingredientBody) {
   try {
     const response = await fetch(
-      `http://localhost:5050/ingredients/${ingredientID.toString()}`,
+      `${uri}/ingredients/${ingredientID.toString()}`,
       {
         method: "PUT",
         headers: {
@@ -146,7 +148,7 @@ export async function deleteIngredient(ingredientID) {
 
   try {
     const response = await fetch(
-      `http://localhost:5050/ingredients/${ingredientID.toString()}`,
+      `${uri}/ingredients/${ingredientID.toString()}`,
       {
         method: "DELETE",
         headers: {
@@ -170,7 +172,7 @@ export async function addDirection(recipeID, index, instruction) {
       instruction: instruction,
     };
     const response = await fetch(
-      `http://localhost:5050/recipes/${recipeID.toString()}/directions`,
+      `${uri}/recipes/${recipeID.toString()}/directions`,
       {
         method: "POST",
         headers: {
@@ -194,7 +196,7 @@ export async function editDirection(recipeID, directionID, index, instruction) {
       instruction: instruction,
     };
     const response = await fetch(
-      `http://localhost:5050/recipes/${recipeID.toString()}/directions/${directionID.toString()}`,
+      `${uri}/recipes/${recipeID.toString()}/directions/${directionID.toString()}`,
       {
         method: "PUT",
         headers: {
@@ -214,7 +216,7 @@ export async function editDirection(recipeID, directionID, index, instruction) {
 export async function deleteDirection(recipeID, directionID) {
   try {
     const response = await fetch(
-      `http://localhost:5050/recipes/${recipeID.toString()}/directions/${directionID.toString()}`,
+      `${uri}/recipes/${recipeID.toString()}/directions/${directionID.toString()}`,
       {
         method: "DELETE",
         headers: {
@@ -234,7 +236,7 @@ export async function getAllDirectionsOnRecipe(recipeID) {
   if (!recipeID) return;
 
   const response = await fetch(
-    `http://localhost:5050/recipes/${recipeID.toString()}/directions`
+    `${uri}/recipes/${recipeID.toString()}/directions`
   );
   if (!response.ok) {
     const message = `An error has occurred: ${response.statusText}`;
@@ -253,7 +255,7 @@ export async function addCallsFor(recipeID, ingredientID, amount, modifier) {
     modifier: modifier,
   };
   const response = await fetch(
-    `http://localhost:5050/recipes/${recipeID.toString()}/callsFor`,
+    `${uri}/recipes/${recipeID.toString()}/callsFor`,
     {
       method: "POST",
       headers: {
@@ -278,7 +280,7 @@ export async function editCallsFor(recipeID, callsForID, amount, modifier) {
       modifier: modifier,
     };
     const response = await fetch(
-      `http://localhost:5050/recipes/${recipeID.toString()}/callsFor/${callsForID.toString()}`,
+      `${uri}/recipes/${recipeID.toString()}/callsFor/${callsForID.toString()}`,
       {
         method: "PUT",
         headers: {
@@ -298,7 +300,7 @@ export async function editCallsFor(recipeID, callsForID, amount, modifier) {
 export async function deleteCallsFor(recipeID, callsForID) {
   try {
     const response = await fetch(
-      `http://localhost:5050/recipes/${recipeID.toString()}/callsFor/${callsForID.toString()}`,
+      `${uri}/recipes/${recipeID.toString()}/callsFor/${callsForID.toString()}`,
       {
         method: "DELETE",
         headers: {
@@ -318,7 +320,7 @@ export async function getAllIngredientsOnRecipe(recipeID) {
   if (!recipeID) return;
 
   const response = await fetch(
-    `http://localhost:5050/recipes/${recipeID.toString()}/callsFor`
+    `${uri}/recipes/${recipeID.toString()}/callsFor`
   );
   if (!response.ok) {
     const message = `An error has occurred: ${response.statusText}`;
