@@ -3,7 +3,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import recipeRoutes from "./routes/recipeRoutes.js";
 import ingredientRoutes from "./routes/ingredientRoutes.js";
-const path = require('path');
+import path from "path";
 
 const PORT = process.env.PORT || 5050;
 const app = express();
