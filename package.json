@@ -4,8 +4,8 @@
   "description": "An application for saving and viewing recipes",
   "main": "client",
   "scripts": {
-    "install": "concurrently \"cd server && npm install\" \"cd client && npm install\"",
-    "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm run dev\""
+    "install": "concurrently \"npm install\" \"cd client && npm install\"",
+    "dev": "concurrently \"nodemon --env-file=config.env server\" \"cd client && npm run dev\""
   },
   "repository": {
     "type": "git",
@@ -16,5 +16,14 @@
   "bugs": {
     "url": "https://github.com/cawleygl/recipe-book/issues"
   },
-  "homepage": "https://github.com/cawleygl/recipe-book#readme"
+  "homepage": "https://github.com/cawleygl/recipe-book#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.20.0",
+    "mongodb": "^6.8.1",
+    "mongoose": "^8.6.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.5"
+  }
 }

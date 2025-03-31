@@ -1,7 +1,7 @@
 import express from 'express';
 import controller from '../controllers/recipeController.js';
-import directionRoutes from "../routes/directionRoutes.js";
-import callsForRoutes from "../routes/callsForRoutes.js";
+import directionRoutes from "./directionRoutes.js";
+import callsForRoutes from "./callsForRoutes.js";
 
 const recipeRoutes = express.Router();
 
