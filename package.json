@@ -4,8 +4,8 @@
   "description": "An application for saving and viewing recipes",
   "main": "client",
   "scripts": {
-    "install": "concurrently \"npm install\" \"cd client && npm install\"",
-    "dev": "concurrently \"nodemon --env-file=config.env server\" \"cd client && npm run dev\""
+    "install": "npm install",
+    "dev": "nodemon --env-file=config.env server"
   },
   "repository": {
     "type": "git",
