@@ -8,7 +8,7 @@
     "server": "nodemon --env-file=config.env server.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "render-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build -- prefix client",
+    "render-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client",
     "clientinstall": "npm install --prefix client"
   },
   "repository": {
