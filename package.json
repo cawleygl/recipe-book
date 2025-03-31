@@ -4,7 +4,6 @@
   "description": "An application for saving and viewing recipes",
   "main": "client",
   "scripts": {
-    "install": "npm install",
     "dev": "nodemon --env-file=config.env server"
   },
   "repository": {
