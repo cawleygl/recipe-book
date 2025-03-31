@@ -3,10 +3,17 @@ import cors from "cors";
 import mongoose from "mongoose";
 import recipeRoutes from "./routes/recipeRoutes.js";
 import ingredientRoutes from "./routes/ingredientRoutes.js";
-import callsForRoutes from "./routes/callsForRoutes.js";
 
 const PORT = process.env.PORT || 5050;
 const app = express();
+
+if (process.env.NODE_ENV === 'production') {
+    //*Set static folder up in production
+    app.use(express.static('client/build'));
+
+    app.get('*', (req,res) => res.sendFile(path.resolve(__dirname, 'client', 'build','index.html')));
+  }
+
 
 app.use(cors());
 app.use(express.json());
