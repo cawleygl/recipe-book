@@ -5,7 +5,8 @@
   "main": "client",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon --env-file=config.env server"
+    "dev": "nodemon --env-file=config.env server",
+    "render-postbuild": "NPM_CONFIG_PRODUCTION=false" 
   },
   "repository": {
     "type": "git",
