@@ -13,7 +13,6 @@ export default function CreateRecipe() {
   }
 
   useEffect(() => {
-    console.log("import.meta.env", import.meta.env);
     handleRecipeFetch();
   }, []);
 

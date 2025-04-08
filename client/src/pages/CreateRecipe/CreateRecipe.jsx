@@ -32,18 +32,18 @@ export default function RecipeDetails() {
   }, []);
 
   // Log State Variables
-  useEffect(() => {
-    console.log("recipe", recipe);
-  }, [recipe]);
-  useEffect(() => {
-    console.log("directions", directions);
-  }, [directions]);
-  useEffect(() => {
-    console.log("callsFors", callsFors);
-  }, [callsFors]);
-  useEffect(() => {
-    console.log("allIngredients", allIngredients);
-  }, [allIngredients]);
+  // useEffect(() => {
+  //   console.log("recipe", recipe);
+  // }, [recipe]);
+  // useEffect(() => {
+  //   console.log("directions", directions);
+  // }, [directions]);
+  // useEffect(() => {
+  //   console.log("callsFors", callsFors);
+  // }, [callsFors]);
+  // useEffect(() => {
+  //   console.log("allIngredients", allIngredients);
+  // }, [allIngredients]);
 
   async function handleSubmitRecipeCreate(event) {
     await addRecipe(

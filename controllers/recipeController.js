@@ -29,7 +29,6 @@ const controller = {
     Promise.all([model.findById(recipeId), direction.find({ recipe: recipeId }), callsFor.find({ recipe: recipeId }).populate("ingredient")])
       .then((results) => {
         if (results) {
-          console.log("results", results);
           const [recipe, directions, ingredients] = results;
           // Sort directions by index
           directions.sort((a, b) => a.index - b.index);
@@ -48,12 +47,8 @@ const controller = {
 
     const { recipe: recipeData, directions, callsFors } = recipeBody;
     const ingredients = [];
-    console.log("RECIPE", recipeData);
-    console.log("DIRECTIONS", directions);
-    console.log("CALLSFORS", callsFors);
 
     let recipe = new model(recipeData);
-    console.log("RECIPE ID?", recipe._id);
 
     // Add recipe id to every direction
     for (let i in directions) {
@@ -69,7 +64,6 @@ const controller = {
           ingredientName: callsFors[i].ingredient.ingredientName
         };
         ingredients.push(ingredientDocument);
-        console.log("ADD INGREDIENT", ingredientDocument);
       }
       callsFors[i].recipe = recipe._id;
       const ingredientID = callsFors[i].ingredient._id;
@@ -87,7 +81,6 @@ const controller = {
       })
       .catch((err) => {
         if (err.name === "ValidationError") {
-          console.log("err", err);
           res.status(403).send({ error: err.message });
           return;
         }
@@ -100,9 +93,6 @@ const controller = {
     let id = req.params.id;
 
     const { recipe, directions, callsFors } = recipeBody;
-    console.log("RECIPE", recipe);
-    console.log("DIRECTIONS", directions);
-    console.log("CALLSFORS", callsFors);
 
     let directionOperations = [];
     for (let i in directions) {
@@ -120,7 +110,6 @@ const controller = {
       };
       directionOperations.push(directionDocument);
     }
-    console.log("directionOperations", JSON.stringify(directionOperations));
 
     let ingredientOperations = [];
     let callsForOperations = [];
@@ -133,7 +122,7 @@ const controller = {
           ingredientName: callsFors[i].ingredient.ingredientName
         };
         ingredientOperations.push(ingredientDocument);
-        console.log("ADD INGREDIENT", ingredientDocument);
+
       }
       // upsert callsFor
       // Assign callsFor ID if none exists and 
@@ -154,12 +143,8 @@ const controller = {
         }
       };
 
-      console.log("UPSERT CALLSFOR", callsForDocument);
       callsForOperations.push(callsForDocument);
     }
-
-    console.log("ingredientOperations", JSON.stringify(ingredientOperations));
-    console.log("callsForOperations", JSON.stringify(callsForOperations));
 
     Promise.all([
       model.findByIdAndUpdate(id, recipe, {
@@ -171,7 +156,6 @@ const controller = {
       callsFor.bulkWrite(callsForOperations),
     ]).then((results) => {
       if (results) {
-        console.log("results", results);
         res.json(results);
       } else {
         res.status(404).json(`No Recipes Found with ID ${req.params.id}`);

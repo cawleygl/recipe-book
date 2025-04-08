@@ -24,12 +24,12 @@ export default function IngredientEdit({
   const [ingredientSearchTerm, setIngredientSearchTerm] = useState("");
 
   // Log state variables
-  useEffect(() => {
-    console.log("options", options);
-  }, [options]);
-  useEffect(() => {
-    console.log("ingredientSearchTerm", ingredientSearchTerm);
-  }, [ingredientSearchTerm]);
+  // useEffect(() => {
+  //   console.log("options", options);
+  // }, [options]);
+  // useEffect(() => {
+  //   console.log("ingredientSearchTerm", ingredientSearchTerm);
+  // }, [ingredientSearchTerm]);
 
   // Check if ingredient is already added
   function checkDuplicateIngredients(event, ingredientBody) {
@@ -38,7 +38,6 @@ export default function IngredientEdit({
       if (
         callsFor.ingredient.ingredientName === ingredientBody.ingredientName
       ) {
-        console.log("DUPLICATE INGREDIENT");
         return true;
       }
     }
@@ -47,7 +46,6 @@ export default function IngredientEdit({
 
   function handleAddIngredientToRecipe(event, ingredientBody) {
     event.preventDefault();
-    console.log("ingredientBody", ingredientBody);
     // Check if ingredient is already added
     if (checkDuplicateIngredients(event, ingredientBody)) return;
 
@@ -61,8 +59,6 @@ export default function IngredientEdit({
       });
       return newValues;
     });
-
-    console.log("Submit Ingredient:", ingredientBody);
 
     setIngredientSearchTerm("");
     setOptions([]);
@@ -92,7 +88,7 @@ export default function IngredientEdit({
     )
       return;
 
-    console.log("New Ingredient", ingredientInput);
+
     setIngredientSearchTerm("");
     handleAddIngredientToRecipe(event, { ingredientName: ingredientInput }, "");
   }
@@ -142,7 +138,6 @@ export default function IngredientEdit({
 
   function disableAddedIngredients(optionID) {
     for (const callsFor of callsFors) {
-      console.log("COMPARE: ", callsFor.ingredient._id, optionID);
       if (callsFor.ingredient._id === optionID) return true;
     }
     return false;

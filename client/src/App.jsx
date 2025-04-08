@@ -20,9 +20,9 @@ const App = () => {
     show: false,
   });
 
-  useEffect(() => {
-    console.log("pageAlert", pageAlert);
-  }, [pageAlert]);
+  // useEffect(() => {
+  //   console.log("pageAlert", pageAlert);
+  // }, [pageAlert]);
 
   return (
     <div className="w-full p-6">

@@ -40,7 +40,6 @@ export async function addRecipe(event, recipeBody, setPageAlert, navigate) {
       const [ recipe, direction, callsFor ] =  await response.json();
       const recipeID = recipe._id;
       // TODO: CHECK RETURNS TO MAKE SURE EVERYTHING GOES THROUHG
-      console.log("Create Return", recipe, direction, callsFor);
       setPageAlert({variant: "success", message: "Recipe Successfully Added", show: true});
       navigate("/recipes/" + recipeID);
       return { response: response };

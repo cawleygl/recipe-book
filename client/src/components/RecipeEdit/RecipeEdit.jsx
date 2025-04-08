@@ -23,12 +23,10 @@ export default function RecipeEdit({
   function handleRecipeFormEdits(newValue, field) {
     setRecipe((prevValues) => {
       const newValues = { ...prevValues };
-      console.log("newValues", newValues);
       newValues[field] = newValue;
       return newValues;
     });
-    console.log("newValue", newValue);
-    console.log("id", field);
+
   }
 
   async function handleFormValidation(event) {

@@ -5,11 +5,11 @@
   "main": "client",
   "scripts": {
     "start": "node server.js",
+    "install": "concurrently \"cd client && npm install\"",
     "server": "nodemon --env-file=config.env server.js",
-    "client": "npm start --prefix client",
+    "client": "cd client && npm run dev",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "render-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client",
-    "clientinstall": "npm install --prefix client"
+    "render-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client"
   },
   "repository": {
     "type": "git",
@@ -25,7 +25,8 @@
     "cors": "^2.8.5",
     "express": "^4.20.0",
     "mongodb": "^6.8.1",
-    "mongoose": "^8.6.3"
+    "mongoose": "^8.6.3",
+    "concurrently": "^9.1.2"
   },
   "devDependencies": {
     "nodemon": "^3.1.5"

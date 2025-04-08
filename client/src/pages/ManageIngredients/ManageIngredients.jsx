@@ -89,21 +89,21 @@ export default function CreateRecipe() {
   useEffect(() => {
     handleIngredientFetch();
   }, []);
-  useEffect(() => {
-    console.log("unitInput", unitInput);
-  }, [unitInput]);
-  useEffect(() => {
-    console.log("unitOutput", unitOutput);
-  }, [unitOutput]);
-  useEffect(() => {
-    console.log("ingredientList", ingredientList);
-  }, [ingredientList]);
-  useEffect(() => {
-    console.log("ingredientName", ingredientName);
-  }, [ingredientName]);
-  useEffect(() => {
-    console.log("density", density);
-  }, [density]);
+  // useEffect(() => {
+  //   console.log("unitInput", unitInput);
+  // }, [unitInput]);
+  // useEffect(() => {
+  //   console.log("unitOutput", unitOutput);
+  // }, [unitOutput]);
+  // useEffect(() => {
+  //   console.log("ingredientList", ingredientList);
+  // }, [ingredientList]);
+  // useEffect(() => {
+  //   console.log("ingredientName", ingredientName);
+  // }, [ingredientName]);
+  // useEffect(() => {
+  //   console.log("density", density);
+  // }, [density]);
 
   return (
     <>
