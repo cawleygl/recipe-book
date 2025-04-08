@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "An application for saving and viewing recipes",
   "main": "client",
+  "type": "module",
   "scripts": {
     "start": "concurrently \"npm run start_server\" \"npm run client\"",
     "dev": "concurrently \"npm run dev_server\" \"npm run client\"",
