@@ -4,14 +4,17 @@ import mongoose from "mongoose";
 import recipeRoutes from "./routes/recipeRoutes.js";
 import ingredientRoutes from "./routes/ingredientRoutes.js";
 import path from "path";
+import { fileURLToPath } from 'url';
 
 const PORT = process.env.PORT || 5050;
 const app = express();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 if (process.env.NODE_ENV === 'production') {
     //*Set static folder up in production
     app.use(express.static('client/dist'));
-
+    
     app.get('*', (req,res) => res.sendFile(path.resolve(__dirname, 'client', 'dist','index.html')));
 }
 
