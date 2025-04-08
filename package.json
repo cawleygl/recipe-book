@@ -10,7 +10,7 @@
     "start_server": "node server.js",
     "dev_server": "nodemon --env-file=config.env server.js",
     "client": "cd client && npm run dev",
-    "build": "cd client && npm build"
+    "build": "cd client && npm run build"
   },
   "repository": {
     "type": "git",
