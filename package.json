@@ -4,11 +4,12 @@
   "description": "An application for saving and viewing recipes",
   "main": "client",
   "scripts": {
-    "start": "node server.js",
+    "start": "concurrently \"npm run start_server\" \"npm run client\"",
+    "dev": "concurrently \"npm run dev_server\" \"npm run client\"",
     "install": "concurrently \"cd client && npm install\"",
-    "server": "nodemon --env-file=config.env server.js",
+    "start_server": "node server.js",
+    "dev_server": "nodemon --env-file=config.env server.js",
     "client": "cd client && npm run dev",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
     "render-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client"
   },
   "repository": {
