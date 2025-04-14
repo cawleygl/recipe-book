@@ -10,6 +10,6 @@ export default defineConfig({
   server: {
     host: "0.0.0.0",
     port: process.env.PORT || 10000,
-    allowedHosts: "recipe-book-xski.onrender.com"
+    allowedHosts: ["recipe-book-xski.onrender.com"]
   }
 });
