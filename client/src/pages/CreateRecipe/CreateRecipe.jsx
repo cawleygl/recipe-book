@@ -45,9 +45,8 @@ export default function RecipeDetails() {
   //   console.log("allIngredients", allIngredients);
   // }, [allIngredients]);
 
-  async function handleSubmitRecipeCreate(event) {
+  async function handleSubmitRecipeCreate() {
     await addRecipe(
-      event,
       { recipe, directions, callsFors },
       setPageAlert,
       navigate

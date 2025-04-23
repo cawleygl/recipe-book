@@ -19,7 +19,7 @@ export default function CreateRecipe() {
   return (
     <>
       <h1>Recipes</h1>
-      <p>{`Select a Recipe to view its Recipe page.`}</p>
+      <p>{recipeList && recipeList.length > 0 ? `Select a Recipe to view its Recipe page.` : `Click 'Add Recipe' to create a recipe!`}</p>
       <ListGroup>
         {recipeList && recipeList.length > 0 &&
           recipeList.map((recipe, index) => {
@@ -30,7 +30,7 @@ export default function CreateRecipe() {
                 variant="primary"
                 onClick={() => navigate(`/recipes/${recipe._id}`)}
               >
-                {recipe.dishName}&nbsp;-&nbsp;{recipe.description.trim()}
+                {recipe.dishName ? recipe.dishName.trim() : "No Name"}&nbsp;{recipe.description ? "- " + recipe.description.trim() : ""}
               </ListGroup.Item>
             );
           })}

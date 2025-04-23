@@ -13,7 +13,7 @@ export default function RecipeDisplay({ recipe, directions, callsFors, renderEdi
         {renderEditButton && renderEditButton()}
         </h1>
       
-        <p>{recipe.description || "Description"}</p>
+        {recipe.description ? <p>{recipe.description}</p> : <></>}
         
       </Card.Header>
       <Card.Body className="recipeCardBody">

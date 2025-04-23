@@ -26,8 +26,7 @@ export async function getOneRecipe(recipeID) {
   return results;
 }
 
-export async function addRecipe(event, recipeBody, setPageAlert, navigate) {
-  event.preventDefault()
+export async function addRecipe(recipeBody, setPageAlert, navigate) {
   try {
     const response = await fetch(`${uri}/recipes`, {
       method: "POST",
@@ -108,7 +107,7 @@ export async function getIngredients() {
 
 export async function addIngredient(ingredientBody) {
   try {
-    const response = await fetch("${uri}/ingredients", {
+    const response = await fetch(`${uri}/ingredients`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

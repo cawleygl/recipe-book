@@ -24,7 +24,7 @@ export default function CreateRecipe() {
   // Ingredient Entry Variables
   const [ingredientID, setIngredientID] = useState("");
   const [ingredientName, setIngredientName] = useState("");
-  const [density, setDensity] = useState("");
+  const [density, setDensity] = useState(0);
   // Unit Entry Variables
   const [unitInput, setUnitInput] = useState(volumetricUnits.TEASPOON.name);
   const [unitOutput, setUnitOutput] = useState(volumetricUnits.TEASPOON.name);
@@ -40,11 +40,11 @@ export default function CreateRecipe() {
   }
 
   const handleIngredientAdd = async () => {
-    //event.preventDefault();
     const ingredientBody = {
       ingredientName: ingredientName.trim(),
-      density: density.trim(),
+      density: 0
     };
+    
     if (ingredientID) {
       await editIngredient(ingredientID, ingredientBody);
     } else {
@@ -120,14 +120,14 @@ export default function CreateRecipe() {
             <Form.Group className="mb-3">
               <Form.Label htmlFor="ingredientName">Name</Form.Label>&nbsp;
               <Form.Text>{`Required`}</Form.Text>&nbsp;
-              <Button
+              {/* <Button
                 className="questionButton mb-3"
                 variant="info"
                 onClick={handleShowInfo}
               >
                 <i className="fa-solid fa-question"></i>
-              </Button>
-              <Offcanvas show={showInfo} onHide={handleCloseInfo}>
+              </Button> */}
+              {/* <Offcanvas show={showInfo} onHide={handleCloseInfo}>
                 <Offcanvas.Header closeButton>
                   <Offcanvas.Title>Questions?</Offcanvas.Title>
                 </Offcanvas.Header>
@@ -156,7 +156,7 @@ export default function CreateRecipe() {
                 creating one vague ingredient that covers both.`}
                   </p>
                 </Offcanvas.Body>
-              </Offcanvas>
+              </Offcanvas> */}
               <Form.Control
                 required
                 className="mb-3"
@@ -167,7 +167,7 @@ export default function CreateRecipe() {
                 value={ingredientName}
                 onChange={(event) => setIngredientName(event.target.value)}
               />
-              <Form.Label htmlFor="density">Density</Form.Label>&nbsp;
+              {/* <Form.Label htmlFor="density">Density</Form.Label>&nbsp;
               <Form.Text>
                 {`Optional - Used to convert volumetric to mass units for this
             particular ingredient. Enter the mass of 1 teaspoon in grams to
@@ -181,7 +181,7 @@ export default function CreateRecipe() {
                 placeholder="..."
                 value={density}
                 onChange={(event) => setDensity(event.target.value)}
-              />
+              /> */}
               <ButtonGroup>
                 <Button onClick={(event) => handleIngredientAdd(event)}>
                   Submit
